@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>707</width>
+    <height>642</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_7">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
+    </property>
+    <item>
+     <widget class="QListWidget" name="soundList">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Имя файла для сохранения</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="saveLine">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveButt">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Сохранить</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playButt">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Играть</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>707</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Настройки</string>
+    </property>
+    <addaction name="set_voice"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="set_voice">
+   <property name="text">
+    <string>Голос</string>
+   </property>
+  </action>
+  <action name="set_output">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
