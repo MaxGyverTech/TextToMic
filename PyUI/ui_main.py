@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(707, 642)
+        MainWindow.resize(962, 593)
         self.set_voice = QAction(MainWindow)
         self.set_voice.setObjectName(u"set_voice")
         self.set_output = QAction(MainWindow)
@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.soundList.sizePolicy().hasHeightForWidth())
         self.soundList.setSizePolicy(sizePolicy)
+        self.soundList.setMaximumSize(QSize(400, 16777215))
 
         self.horizontalLayout_7.addWidget(self.soundList)
 
@@ -91,13 +92,10 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 707, 21))
+        self.menubar.setGeometry(QRect(0, 0, 962, 21))
         self.menu = QMenu(self.menubar)
         self.menu.setObjectName(u"menu")
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menu.menuAction())
         self.menu.addAction(self.set_voice)

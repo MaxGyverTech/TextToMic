@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 import threading
 from PySide2 import QtWidgets, QtCore, QtGui, QtMultimedia
 from PyUI import ui_main
@@ -7,15 +8,15 @@ from PyUI import ui_main
 import pyttsx3
 import sounddevice as sd
 import soundfile as sf
-
 import keyboard
+
 
 def play(data, fs, device=None, id=0):
     if device is None:
         sd.play(data, fs)
     else:
         sd.play(data, fs, device=device)
-    print(f'process {id} time {a}')
+    print(f'process {id}')
 
 
 class Player(threading.Thread):
@@ -43,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle('TextToMic by MaxGyver')
         self.setWindowIcon(QtGui.QIcon('res/icon.ico'))
-        # self.setStyleSheet(open('res/main.qss', 'r').read())
+        self.setStyleSheet(open('res/main.qss', 'r').read())
         # classes
         self.engine = pyttsx3.init()
 
@@ -90,9 +91,11 @@ class MainWindow(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
             self.play_sound()
 
     def ev_play_save(self):
+        if self.ui.textEdit.toPlainText() == '':
+            return
         file = self.ui.saveLine.text()
         if file == '':
-            file = self.ui.textEdit.toPlainText()[:15]
+            file = self.ui.textEdit.toPlainText()[:20]
         self.record_text(self.ui.textEdit.toPlainText(), file=file)
         self.play_sound(file=file)
         self.update_list()
@@ -148,7 +151,6 @@ class MainWindow(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
         item, ok = QtWidgets.QInputDialog().getItem(self, "Настройка выхода", "Выберите устройство", devices, 0, False)
         if ok:
             device = sd.query_devices(item)[0]
-            print(device)
             self.device = device.hostapi()
 
     def change_voice(self):
@@ -201,8 +203,9 @@ class SoundItemWidget(QtWidgets.QWidget):
         self.parent = parent
         self.filename = filename
         self.key = None
+        self.setObjectName('SoundItemWidget')
 
-        self.keyEdit = QtWidgets.QKeySequenceEdit(QtGui.QKeySequence(key))
+        self.keyEdit = QtWidgets.QPushButton(key if key is not None else 'Задать сочетание клавиш')
         self.keyEdit.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
         self.keyEdit.adjustSize()
 
@@ -222,48 +225,54 @@ class SoundItemWidget(QtWidgets.QWidget):
         self.key_layout.addWidget(self.delete_but)
 
         self.layout = QtWidgets.QHBoxLayout()
-        self.layout.addWidget(QtWidgets.QLabel(filename))
+        self.layout.addWidget(QtWidgets.QLabel(filename if len(filename)<20 else filename[:19]+'...'))
         self.layout.addLayout(self.key_layout)
         self.setLayout(self.layout)
 
         self.setToolTip('даблкликни на меня')
 
         if key is not None:
-            self.key = key.lower()
+            self.key = key
             keyboard.add_hotkey(self.key, self.play_sound)
 
-        self.keyEdit.editingFinished.connect(self.key_changed)
+        self.keyEdit.clicked.connect(self.key_change)
 
     def clear_key(self):
-        self.keyEdit.clear()
-        keyboard.remove_hotkey(self.key)
-        self.parent.settings.remove(f'{self.parent.key_bind_dir}{self.filename}.wav')
+        self.keyEdit.setText('Задать сочетание клавиш')
+        if self.key is not None:
+            keyboard.remove_hotkey(self.key)
+        self.key = None
+        self.parent.settings.remove(f'{self.parent.key_bind_dir}{self.filename}')
 
     def delete_key(self):
         os.remove(f'sounds/{self.filename}.wav')
-        self.parent.settings.remove(f'{self.parent.key_bind_dir}{self.filename}.wav')
-        keyboard.remove_hotkey(self.key)
-        self.parent.update_list()
-
-    def key_changed(self):
+        self.parent.settings.remove(f'{self.parent.key_bind_dir}{self.filename}')
         if self.key is not None:
             keyboard.remove_hotkey(self.key)
-        self.key = self.keyEdit.keySequence().toString().lower()
+        self.parent.update_list()
+
+    def key_change(self):
+        if self.key is not None:
+            keyboard.remove_hotkey(self.key)
+        self.keyEdit.setText('...')
+        self.keyEdit.setStyleSheet('border-width: 2px;')
+        self.key = keyboard.read_hotkey(suppress=False)
+        self.keyEdit.setStyleSheet('border-width: 0px;')
+        self.keyEdit.setText(self.key)
+        print(self.key)
         keyboard.add_hotkey(self.key, SoundItemWidget.play_sound, args=[self])
         self.parent.upd_shortcut(self.filename, self.key)
 
     def play_sound(self):
-        print(self.key, self.filename)
         self.parent.play_sound(self.filename)
 
     def mouseDoubleClickEvent(self, event):
         self.play_sound()
 
-
 class VoiceSettings(QtWidgets.QWidget):
     def __init__(self, voices, current_voice=0, parent=None):
         super(VoiceSettings, self).__init__()
-
+        self.setStyleSheet(open('res/main.qss', 'r').read())
         self.parent = parent
         self.voices = voices
 
@@ -338,13 +347,17 @@ class ErrorWindow(QtWidgets.QWidget):
 def excepthook(exc_type, exc_value, exc_tb):
     window.debug_err(exc_type, exc_value)
 
+def key_loop():
+    keyboard.wait()
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    sys.excepthook = excepthook
+    key_tr = threading.Thread(target=key_loop)
+    key_tr.start()
+    # sys.excepthook = excepthook
     app.exec_()
 
-    keyboard.wait()
 

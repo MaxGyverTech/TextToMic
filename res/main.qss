@@ -1,3 +1,34 @@
 QWidget {
-    background-color: #006699;
+    background-color: #282b33;
+    color: white;
+    font-family: SansSerif;
+    font-size: 12px;
+}
+QListWidget, QTextEdit, QLineEdit {
+    background-color: #3a3d45;
+    border-radius: 7px;
+    border-width: 0px;
+}
+QListWidget::item {
+    background-color: #282b33;
+    margin: 6px 6px 0px 6px;
+    border-radius: 5px;
+    border-width: 0px;
+}
+QPushButton, QKeySequenceEdit {
+    padding: 5px;
+    background-color: #3a3d45;
+    border-radius: 5px;
+    border: black 4px solid;
+}
+QKeySequenceEdit {
+    padding: 10px;
+}
+QComboBox {
+    background-color: #3a3d45;
+    border-width: 0px;
+}
+QComboBox::item {
+    background-color: #3a3d45;
+    border-width: 0px;
 }
