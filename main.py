@@ -34,7 +34,7 @@ class Player(threading.Thread):
             sd.play(self.data, self.fs, device=self.device)
         print(f'process {self.id}')
 
-# pyinstaller --hidden-import=pyttsx3.drivers --hidden-import=pyttsx3.drivers.dummy --hidden-import=pyttsx3.drivers.espeak --hidden-import=pyttsx3.drivers.nsss --hidden-import=pyttsx3.drivers.sapi5 --onefile --noconsole --icon=icon.ico --name="Text to Mic by MaxGyverTech" --paths C:\Users\MaxGyver\Documents\JetBrains\PY\soundpad\res main.py
+# pyinstaller --hidden-import=pyttsx3.drivers --hidden-import=pyttsx3.drivers.dummy --hidden-import=pyttsx3.drivers.espeak --hidden-import=pyttsx3.drivers.nsss --hidden-import=pyttsx3.drivers.sapi5 --onefile --noconsole --icon=icon.ico --name="Text to Mic by MaxGyverTech" main.py
 # pyside2-uic UI/main.ui -o PyUI/ui_main.py
 class MainWindow(QtWidgets.QMainWindow, ui_main.Ui_MainWindow):
     def __init__(self):
