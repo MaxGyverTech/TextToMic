@@ -1,5 +1,6 @@
 # TextToMic
 Простая программа на python для озвучивания звука в виртуальное аудиоустроство
+![](screenshot.png)
 #### Зависимости:
 `pip install -r requirements.txt`
 
